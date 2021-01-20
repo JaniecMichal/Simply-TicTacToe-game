@@ -52,3 +52,8 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.activeButton {
+  border: 2px solid crimson;
+  color: crimson;
+}

@@ -4,10 +4,7 @@ import "./index.css";
 
 function Square(props) {
   return (
-    <button
-      className={props.active ? "square active" : "square"}
-      onClick={props.onClick}
-    >
+    <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -18,7 +15,6 @@ class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
-        active={""}
       />
     );
   }
@@ -61,28 +57,6 @@ class Game extends React.Component {
     };
   }
 
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-
-    squares[[i]] = this.state.xIsNext ? "X" : "O";
-    const coOrdinates = this.setCoOrdinates(i);
-    this.setState({
-      history: history.concat([
-        {
-          squares: squares,
-          cO: coOrdinates,
-        },
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
-    });
-  }
-
   setCoOrdinates(squarePosition) {
     switch (squarePosition) {
       case 0:
@@ -106,6 +80,28 @@ class Game extends React.Component {
       default:
         return;
     }
+  }
+
+  handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+
+    squares[[i]] = this.state.xIsNext ? "X" : "O";
+    const coOrdinates = this.setCoOrdinates(i);
+    this.setState({
+      history: history.concat([
+        {
+          squares: squares,
+          cO: coOrdinates,
+        },
+      ]),
+      stepNumber: history.length,
+      xIsNext: !this.state.xIsNext,
+    });
   }
 
   jumpTo(step) {
@@ -132,7 +128,10 @@ class Game extends React.Component {
         : "Go to game beginning";
       return (
         <li key={move}>
-          <button className={""} onClick={() => this.jumpTo(move)}>
+          <button
+            className={current === history[move] ? "activeButton" : ""}
+            onClick={() => this.jumpTo(move)}
+          >
             {desc}
           </button>
         </li>
