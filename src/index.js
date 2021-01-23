@@ -4,42 +4,43 @@ import "./index.css";
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button id={props.id} className="square" onClick={props.onClick}>
       {props.value}
     </button>
   );
 }
-class Board extends React.Component {
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
 
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+function Board(props) {
+  const completeBoard = [];
+  for (let rows = 0; rows < 3; rows++) {
+    const boardCols = [];
+    for (let cols = 0; cols < 3; cols++) {
+      const areaValue = () => {
+        if (rows === 0) {
+          return cols;
+        }
+        if (rows === 1) {
+          return rows + cols + 2;
+        }
+        return rows + cols + 4;
+      };
+      boardCols.push(
+        <Square
+          id={cols}
+          value={props.squares[areaValue()]}
+          onClick={() => props.onClick(areaValue())}
+        />
+      );
+    }
+
+    completeBoard.push(
+      <div id={rows} className="board-row">
+        {boardCols}
       </div>
     );
   }
+
+  return <div>{completeBoard}</div>;
 }
 
 class Game extends React.Component {
