@@ -26,6 +26,7 @@ function Board(props) {
       };
       boardCols.push(
         <Square
+          key={cols}
           id={cols}
           value={props.squares[areaValue()]}
           onClick={() => props.onClick(areaValue())}
@@ -34,7 +35,7 @@ function Board(props) {
     }
 
     completeBoard.push(
-      <div id={rows} className="board-row">
+      <div key={rows} id={rows} className="board-row">
         {boardCols}
       </div>
     );
@@ -55,6 +56,7 @@ class Game extends React.Component {
       xIsNext: true,
       stepNumber: 0,
       cO: {},
+      isAscending: true,
     };
   }
 
@@ -102,6 +104,7 @@ class Game extends React.Component {
       ]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      moves: [],
     });
   }
 
@@ -109,6 +112,12 @@ class Game extends React.Component {
     this.setState({
       stepNumber: step,
       xIsNext: step % 2 === 0,
+    });
+  }
+
+  handleSortToggle() {
+    this.setState({
+      isAscending: !this.state.isAscending,
     });
   }
 
@@ -139,6 +148,12 @@ class Game extends React.Component {
       );
     });
 
+    const isAscending = this.state.isAscending;
+
+    if (!isAscending) {
+      moves.reverse();
+    }
+
     let status;
     if (winner) {
       status = "Win player: " + winner;
@@ -156,6 +171,14 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <div>
+            <button
+              className="sortButton"
+              onClick={() => this.handleSortToggle()}
+            >
+              {isAscending ? "Sort descending" : "Sort ascending"}
+            </button>
+          </div>
           <ol>{moves}</ol>
         </div>
       </div>
