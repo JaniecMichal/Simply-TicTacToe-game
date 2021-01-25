@@ -57,3 +57,18 @@ ol, ul {
   border: 2px solid crimson;
   color: crimson;
 }
+
+.sortButton {
+  margin-top: 5px;
+  background-color: teal;
+  border: 2px solid black;
+  color: black;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.sortButton:hover {
+  background-color: white;
+  cursor: pointer;
+  border-color: teal;
+}
