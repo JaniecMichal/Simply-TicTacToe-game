@@ -72,3 +72,8 @@ ol, ul {
   cursor: pointer;
   border-color: teal;
 }
+
+.win {
+  background-color: black;
+  color: white;
+}

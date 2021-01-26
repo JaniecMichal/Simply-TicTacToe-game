@@ -3,14 +3,16 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 function Square(props) {
+  const className = `square ${props.win ? "win" : ""}`;
   return (
-    <button id={props.id} className="square" onClick={props.onClick}>
+    <button id={props.id} className={className} onClick={props.onClick}>
       {props.value}
     </button>
   );
 }
 
 function Board(props) {
+  const winLine = props.winLine;
   const completeBoard = [];
   for (let rows = 0; rows < 3; rows++) {
     const boardCols = [];
@@ -30,6 +32,7 @@ function Board(props) {
           id={cols}
           value={props.squares[areaValue()]}
           onClick={() => props.onClick(areaValue())}
+          win={winLine && winLine.includes(areaValue())}
         />
       );
     }
@@ -89,7 +92,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares).winPlayer || squares[i]) {
       return;
     }
 
@@ -155,8 +158,8 @@ class Game extends React.Component {
     }
 
     let status;
-    if (winner) {
-      status = "Win player: " + winner;
+    if (winner.winPlayer) {
+      status = "Win player: " + winner.winPlayer;
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -167,6 +170,7 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
+            winLine={winner.winLine}
           />
         </div>
         <div className="game-info">
@@ -201,10 +205,10 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return { winPlayer: squares[a], winLine: lines[i] };
     }
   }
-  return null;
+  return { winPlayer: null, winLine: null };
 }
 
 // ========================================
