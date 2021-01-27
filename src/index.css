@@ -77,3 +77,23 @@ ol, ul {
   background-color: black;
   color: white;
 }
+
+.restartButton {
+  display: visible;
+  margin-top: 10px;
+  background-color: green;
+  border: 2px solid black;
+  color: black;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.restartButton:hover {
+  background-color: white;
+  border-color: green;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}

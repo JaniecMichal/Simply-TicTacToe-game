@@ -157,13 +157,18 @@ class Game extends React.Component {
       moves.reverse();
     }
 
+    const isEndOfMove = current.squares.some((square) => square === null);
+
     let status;
     if (winner.winPlayer) {
       status = "Win player: " + winner.winPlayer;
+    }
+    if (!isEndOfMove && !winner.winPlayer) {
+      status = "The result is draw!";
+      alert("The game ending by draw!");
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
-
     return (
       <div className="game">
         <div className="game-board">
@@ -172,6 +177,14 @@ class Game extends React.Component {
             onClick={(i) => this.handleClick(i)}
             winLine={winner.winLine}
           />
+          <button
+            className={`restartButton ${
+              winner.winPlayer || isEndOfMove === false ? "" : "hide"
+            }`}
+            onClick={() => window.location.reload()}
+          >
+            Play again!
+          </button>
         </div>
         <div className="game-info">
           <div>{status}</div>
